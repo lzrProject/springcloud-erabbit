@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="erabbit-code-generator" />
+        <module name="erabbit-gateway-web" />
+        <module name="erabbit-user-oauth-system" />
+        <module name="erabbit-service-user" />
+        <module name="erabbit-user-oauth-web" />
+        <module name="erabbit-service-user-api" />
+        <module name="erabbit-gateway-system" />
+        <module name="erabbit-common" />
+        <module name="erabbit-web-system" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

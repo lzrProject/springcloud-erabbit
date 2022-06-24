@@ -12,6 +12,36 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  redis:
+    port: 6370
+    host: 118.25.242.174
+
+#feign:
+#  httpclient:
+#    enabled: true
+#    max-connections: 200
+#    max-connections-per-route: 50   # 连接池数量
+#    connection-timeout: 10000
+##    connection-timer-repeat:
+#  hystrix:
+#    enabled: true
+#
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        timeout:
+#          enable: true
+##        isolation:
+##          strategy: SEMAPHORE
+#          thread:
+#            timeoutInMilleseconds: 60000
+
+#ribbon:
+#  #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的实际时间，单位毫秒
+#  ReadTimeout: 5000
+#  #指的是建立连接后从服务器读取到可用资源所用的时间，单位毫秒
+#  ConnectTimeout: 10000
 
 
 # Mybatis 配 置
@@ -20,7 +50,7 @@ mybatis-plus:
   mapper-locations: classpath:**/xml/**.xml
   # 别 名 扫 描
   type-aliases-package: com.erabbit.user.pojo;
-  # 日 志
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  # 日 志
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 

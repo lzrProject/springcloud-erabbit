@@ -1,7 +1,7 @@
 package com.erabbit.user.feign;
 
-import com.erabbit.common.entity.web.PageDomain;
 import com.erabbit.common.entity.Result;
+import com.erabbit.user.handle.FallbackServiceHandler;
 import com.erabbit.user.pojo.Role;
 import com.erabbit.user.pojo.User;
 import com.erabbit.user.pojo.dto.PageSelect;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient("service-user")
-@RequestMapping("user")
+@FeignClient(value = "service-user",fallback = FallbackServiceHandler.class, path = "/user")
+//@RequestMapping("user")
 public interface UserFeign {
 
     @PostMapping(value = "/add")

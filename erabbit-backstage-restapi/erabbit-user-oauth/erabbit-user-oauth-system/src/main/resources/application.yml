@@ -8,11 +8,14 @@ spring:
     username: root
     password: 123456
   application:
-    name: service-oauth
+    name: service-sys-oauth
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  redis:
+    port: 6370
+    host: 118.25.242.174
   main:
     allow-bean-definition-overriding: true
 

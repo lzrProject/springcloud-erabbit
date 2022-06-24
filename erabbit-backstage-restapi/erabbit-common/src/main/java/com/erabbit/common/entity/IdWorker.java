@@ -159,12 +159,13 @@ public class IdWorker {
         return id;
     }
 
-//    public static void main(String[] args) {
-//        IdWorker idWorker = new IdWorker(0,0);
-//
+    public static void main(String[] args) {
+        IdWorker idWorker = new IdWorker(0,0);
+
 //        for (int i = 0; i <10000; i++) {
 //            long nextId=idWorker.nextId();
 //
 //        }
-//    }
+        System.out.println(idWorker.nextId());
+    }
 }

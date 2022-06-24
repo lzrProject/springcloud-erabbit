@@ -1,6 +1,6 @@
 spring:
   application:
-    name: service-gateway
+    name: service-sys-gateway
   cloud:
     #限流、降级
     sentinel:
@@ -33,34 +33,34 @@ spring:
               - DELETE
       routes:
         #唯一标识符
-        - id: login_route
-          #        #用户请求需要路由到该服务【指定该服务的路由】
-          uri: lb://service-oauth
-
-          #路由规则配置
-          predicates:
-            - Path=/login/**
-
-          filters:
-            #局部限流过滤器
-            - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的facatory
-              args:
-                key-resolver: "#{@ipKeyResolver}"
-                #每秒只允许请求个数
-                redis-rate-limiter.replenishRate: 1
-                #允许并发有请求个数
-                redis-rate-limiter.burstCapacity: 1
+#        - id: login_route
+#          #        #用户请求需要路由到该服务【指定该服务的路由】
+#          uri: lb://service-oauth-web
+#
+#          #路由规则配置
+#          predicates:
+#            - Path=/login/**
+#
+#          filters:
+#            #局部限流过滤器
+#            - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的facatory
+#              args:
+#                key-resolver: "#{@ipKeyResolver}"
+#                #每秒只允许请求个数
+#                redis-rate-limiter.replenishRate: 1
+#                #允许并发有请求个数
+#                redis-rate-limiter.burstCapacity: 1
 
         #唯一标识符
-        - id: index_route
+        - id: sys_index_route
           #        #用户请求需要路由到该服务【指定该服务的路由】
-          uri: lb://service-index
+          uri: lb://service-sys-index
           #路由规则配置
           predicates:
             - Path=/admin/**,/component/**,/pear.config.yml,/index,/menu,/console,/system/notice/notice,/user/**,/role/**,/power/**,
-        - id: oauth_route
+        - id: sys_oauth_route
           #        #用户请求需要路由到该服务【指定该服务的路由】
-          uri: lb://service-oauth
+          uri: lb://service-sys-oauth
           #路由规则配置
           predicates:
             - Path=/login/**

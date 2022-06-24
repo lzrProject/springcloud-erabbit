@@ -33,7 +33,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
 
         //获取指定服务的注册服务
-        ServiceInstance choose = loadBalancerClient.choose("service-oauth");
+        ServiceInstance choose = loadBalancerClient.choose("service-sys-oauth");
 
 //        //调用请求地址
         String url = choose.getUri()+"/oauth/token";

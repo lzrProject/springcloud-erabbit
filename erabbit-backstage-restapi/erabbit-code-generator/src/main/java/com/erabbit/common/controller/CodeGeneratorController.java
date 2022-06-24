@@ -24,7 +24,7 @@ public class CodeGeneratorController {
         String projectPath = System.getProperty("user.dir");
 
 
-        gc.setOutputDir(projectPath+"/erabbit-service/erabbit-service-user/src/main/java");
+        gc.setOutputDir(projectPath+"/erabbit-service/erabbit-service-seckill/src/main/java");
         gc.setAuthor("erabbit_admin_111");
         gc.setOpen(false);
         gc.setFileOverride(false); // 是否覆盖
@@ -45,8 +45,8 @@ public class CodeGeneratorController {
         //3、包的配置
         PackageConfig pc = new PackageConfig();
 //        pc.setModuleName("blog");
-        pc.setParent("com.erabbit.service.user");
-        pc.setEntity("entity");
+        pc.setParent("erabbit.service.seckill");
+        pc.setEntity("pojo");
         pc.setMapper("mapper");
         pc.setXml("mapper.xml");
         pc.setService("service");
@@ -55,11 +55,12 @@ public class CodeGeneratorController {
         mpg.setPackageInfo(pc);
         //4、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("tb_power");// 设置要映射的表名
+        strategy.setInclude("tb_order_item");// 设置要映射的表名
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);// 自动lombok；
         strategy.setTablePrefix("tb_");
+        strategy.setControllerMappingHyphenStyle(false);
 //        strategy.setLogicDeleteFieldName("deleted");
         // 自动填充配置
         TableFill gmtCreate = new TableFill("gmt_create", FieldFill.INSERT);

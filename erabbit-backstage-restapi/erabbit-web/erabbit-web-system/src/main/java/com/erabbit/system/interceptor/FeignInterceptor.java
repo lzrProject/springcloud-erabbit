@@ -9,7 +9,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Enumeration;
 
 @Configuration
-public class FeignInterceptor  implements RequestInterceptor {
+public class FeignInterceptor implements RequestInterceptor {
 
     /***
      * 拦截器 Feign执行之前拦截，获取令牌

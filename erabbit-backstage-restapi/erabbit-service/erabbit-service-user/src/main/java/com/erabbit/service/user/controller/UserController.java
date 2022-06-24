@@ -11,6 +11,10 @@ import com.erabbit.user.pojo.UserRole;
 import com.erabbit.user.pojo.dto.PageSelect;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +34,8 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
+//@DefaultProperties(defaultFallback = "userGlobalFallback")  //全局降级
 public class UserController {
     @Autowired
     private UserService userService;
@@ -58,9 +64,41 @@ public class UserController {
         return new Result(true, StatusCode.SUCCESS,"添加成功");
     }
 
-    @GetMapping("findUsername/{username}")
-    public Result<User> findUsername(@PathVariable("username") String username){
+    /**
+     * 前台注册
+     * @param user
+     * @return
+     */
+    @PostMapping(value = "/pcAdd")
+    public Result pcAdd(@RequestBody User user) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("username",user.getUsername());
+        List<User> userList = userService.listByMap(map);
 
+        if (userList.size() != 0) return new Result(false,StatusCode.SUCCESS,"用户名重复,请重新输入");
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userService.save(user);
+        return new Result(true, StatusCode.SUCCESS,"添加成功");
+    }
+
+    @GetMapping("findUsername/{username}")
+    @HystrixCommand(fallbackMethod = "findUserFallbackHandler",commandProperties = {
+            //表示如果调用paymentInfoTimeout方法，响应的时间超出5000毫秒（5s）就会触发降级方法，
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "5000")
+    },threadPoolProperties = {
+            @HystrixProperty(name = "coreSize", value = "30"),
+            @HystrixProperty(name = "maxQueueSize", value = "100"),
+            @HystrixProperty(name = "queueSizeRejectionThreshold", value = "100")
+    })
+    public Result<User> findUsername(@PathVariable("username") String username){
+        log.info("查询用户：{}",username);
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         User user = userService.findUsername(username);
         return new Result<>(true,StatusCode.SUCCESS,"查询成功",user);
     }
@@ -113,6 +151,19 @@ public class UserController {
     public Result delete(@RequestParam("id") Integer id){
         userService.delete(id);
         return new Result(true,StatusCode.SUCCESS,"删除成功");
+    }
+
+
+    ////////////////////////////////////////////////////////////
+
+//    @HystrixCommand
+    public String userGlobalFallback(){
+        return "this is userGlobalFallback(全局的降级方法)";
+    }
+
+    public Result<User> findUserFallbackHandler(String username){
+        log.info("UserController findUsername局部降级：",username);
+        return new Result<>(false,StatusCode.ERROR_RESPONSE,"查询超时",null);
     }
 }
 

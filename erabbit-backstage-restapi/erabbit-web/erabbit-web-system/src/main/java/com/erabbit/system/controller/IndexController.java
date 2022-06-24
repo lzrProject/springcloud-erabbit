@@ -24,7 +24,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping
-@CrossOrigin //跨域
+//@CrossOrigin //跨域
 public class IndexController {
 
     @Autowired

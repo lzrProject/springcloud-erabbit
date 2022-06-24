@@ -1,5 +1,7 @@
 package com.erabbit.oauth2.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.erabbit.common.entity.Result;
 import com.erabbit.common.entity.StatusCode;
 import com.erabbit.oauth2.service.UserLoginService;
@@ -102,5 +104,10 @@ public class LoginController {
             return new Result(false, StatusCode.SUCCESS,"用户名存在");
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        JSONObject jsonObject = JSON.parseObject("{\"connectInfo\":{\"password\":\"lanlanfox\",\"jdbcUrl\":\"jdbc:mysql://119.91.211.99:3306/cooper?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true\",\"driverClassName\":\"com.mysql.cj.jdbc.Driver\",\"username\":\"root\"},\"sql\":\"select id,name from date\",\"fields\":[\"id\",\"name\"],\"className\":\"cn.ubattery.connector.mysqlconnector.service.impl.FlinkDataSource\"}");
+        System.out.println("-configParams " +jsonObject.toJSONString());
     }
 }

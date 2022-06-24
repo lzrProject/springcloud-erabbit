@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>erabbit-service-user-api</module>
+        <module>erabbit-service-seckill-api</module>
     </modules>
 
     <properties>

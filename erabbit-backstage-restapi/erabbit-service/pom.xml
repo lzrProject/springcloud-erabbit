@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>erabbit-service-user</module>
+        <module>erabbit-service-seckill</module>
+        <module>erabbit-service-goods</module>
     </modules>
 
     <properties>
@@ -21,6 +23,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.example</groupId>

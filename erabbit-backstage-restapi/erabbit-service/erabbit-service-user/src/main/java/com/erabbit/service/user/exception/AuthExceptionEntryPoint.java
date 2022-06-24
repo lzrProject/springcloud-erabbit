@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONWriter;
 import com.erabbit.common.entity.Result;
 import com.erabbit.common.entity.StatusCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
@@ -19,32 +20,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class AuthExceptionEntryPoint implements AuthenticationEntryPoint {
 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws ServletException {
-        Map<String, Object> map = new HashMap<String, Object>();
+
         Throwable cause = authException.getCause();
 
-        String loginUrl = "http://"+request.getRemoteAddr()+":10012/login/admin";
-//        response.setStatus(HttpStatus.OK.value());
         response.setHeader("Content-Type", "application/json;charset=UTF-8");
-//        response.setContentType("text/html;charset=UTF-8");
+//        response.setHeader("Content-Type", "text/html;charset=utf-8");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        Result result = new Result();
         try {
             if (cause instanceof InvalidTokenException) {
-                Result result = new Result(false, StatusCode.ERROR_PERMISSION, "token失效");
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                response.setStatus(HttpStatus.NOT_FOUND.value());
+                result.setFlag(false);
+                result.setCode(StatusCode.ERROR_PERMISSION);
+                result.setMessage("token失效");
                 response.getWriter().write(JSON.toJSONString(result));
-//                PrintWriter writer = response.getWriter();
-//                writer.print("<script>layer.msg('token失效', {icon: 2, time: 1000}); " +
-//                        " window.location.href='"+loginUrl+"';</script>");
-//                writer.close();
+            }else {
+                result.setFlag(false);
+                result.setCode(StatusCode.ERROR_PERMISSION);
+                result.setMessage(authException.getMessage());
+                response.getWriter().write(JSON.toJSONString(result));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
